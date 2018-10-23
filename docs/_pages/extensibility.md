@@ -24,7 +24,7 @@ public static class DirectoryInfoExtensions
 }
 ```
 
-It's the returned assertions class that provides the actually assertion methods. You don't need to, but if you sub-class the self-referencing generic class `ReferenceTypeAssertions<TSubject, TSelf>`, you'll already get methods like `BeNull`, `BeSameAs` and `Match` for free. Assuming you did, and you provided an override of the `Identifier` property so that these methods know that we're dealing with a directory, it's time for the the next step. Let's add an extension that allows you to assert that the involved directory contains a particular file.
+It's the returned assertions class that provides the actually assertion methods. You don't need to, but if you sub-class the self-referencing generic class `ReferenceTypeAssertions<TSubject, TSelf>`, you'll already get methods like `BeNull`, `BeSameAs` and `Match` for free. Assuming you did, and you provided an override of the `Identifier` property so that these methods know that we're dealing with a directory, it's time for the the next step. Let's add an extension that allows you to assert that the involved directory contains a particular file. Also please note the [CustomAssertion], is required if the context is to be understood when producing a FailWith message.
 
 ```csharp
 public class DirectoryInfoAssertions : 
@@ -37,6 +37,7 @@ public class DirectoryInfoAssertions :
 
     protected override string Identifier => "directory";
 
+    [CustomAssertion]
     public AndConstraint<DirectoryInfoAssertions> ContainFile(
         string filename, string because = "", params object[] becauseArgs)
     {
